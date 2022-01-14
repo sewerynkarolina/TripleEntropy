@@ -18,7 +18,6 @@ class RobertaTripleEntropyForSequenceClassification(RobertaPreTrainedModel):
 
         self.init_weights()
 
-        self.dim = kwargs.get('dim', None)
         self.la = kwargs.get('la', None)
         self.gamma = kwargs.get('gamma', None)
         self.margin = kwargs.get('margin', None)
@@ -28,7 +27,7 @@ class RobertaTripleEntropyForSequenceClassification(RobertaPreTrainedModel):
 
         self.softTriple = losses.SoftTripleLoss(
                     num_classes=self.num_labels,
-                    embedding_size=self.dim,
+                    embedding_size=config.hidden_size,
                     centers_per_class=self.centers,
                     la=self.la,
                     gamma=self.gamma,
