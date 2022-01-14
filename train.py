@@ -4,7 +4,7 @@
 import transformers
 from numpy import unique
 from transformers import AutoTokenizer
-from transformers import Trainer
+from transformers import Trainer, TrainingArguments
 import training
 from RobertaTripleEntropyForSequenceClassification import RobertaTripleEntropyForSequenceClassification
 import numpy as np
@@ -25,8 +25,15 @@ parser.add_argument('--margin', default=0.1, type=float, dest='margin')
 parser.add_argument('--centers', default=1000, type=int, dest='centers')
 parser.add_argument('--beta', default=0.9, type=float, dest='beta')
 parser.add_argument('--seed', default=2048, type=int, dest='seed')
+parser.add_argument('--output-dir', default="./result", type=int, dest='output_dir')
+parser.add_argument('--epochs', default=8, type=int, dest='epochs')
 
 args = parser.parse_args()
+
+TrainingArguments(
+    output_dir=args.output_dir,  # output directory
+    num_train_epochs=args.epochs
+)
 
 if __name__ == '__main__':
     seed = args.seed
@@ -76,7 +83,7 @@ if __name__ == '__main__':
 
     param_groups = [{"params": model.parameters(),
                      'lr': float(learning_rate)}]
-    
+
     optimizer = transformers.AdamW(param_groups, eps=eps, weight_decay=weight_decay, correct_bias=True)
     scheduler = transformers.get_cosine_schedule_with_warmup(optimizer=optimizer,
                                                              num_warmup_steps=num_warmup_steps,
