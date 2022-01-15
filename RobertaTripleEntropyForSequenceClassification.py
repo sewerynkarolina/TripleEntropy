@@ -21,7 +21,6 @@ class RobertaTripleEntropyForSequenceClassification(RobertaPreTrainedModel):
         self.la = kwargs.get('la', None)
         self.gamma = kwargs.get('gamma', None)
         self.margin = kwargs.get('margin', None)
-        self.dim = kwargs.get('dim', None)
         self.centers = kwargs.get('centers', None)
         self.beta = kwargs.get('beta', None)
 
@@ -66,7 +65,7 @@ class RobertaTripleEntropyForSequenceClassification(RobertaPreTrainedModel):
         if labels is not None:
             loss_fct = CrossEntropyLoss()
             ce_loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
-            populated_labels = torch.ones(sequence_output.shape[0] * sequence_output.shape[1]).type(torch.LongTensor).to(loss.device)
+            populated_labels = torch.ones(sequence_output.shape[0] * sequence_output.shape[1]).type(torch.LongTensor).to(ce_loss.device)
 
             counter = 0
             for label in labels.view(-1):
