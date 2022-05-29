@@ -21,11 +21,11 @@ parser.add_argument('--eps', default=1e-08, type=float, dest='eps')
 parser.add_argument('--model-name', default="roberta-large", dest='model_name')
 parser.add_argument('--model-type', default="triple-entropy", dest='model_type')
 parser.add_argument('--weight-decay', default=0.01, type=float, dest='weight_decay')
-parser.add_argument('--la', default=3.3, type=float, dest='la')
+parser.add_argument('--la', default=8, type=float, dest='la')
 parser.add_argument('--supcon-temp', default=0.1, type=float, dest='supcon_temp')
 parser.add_argument('--gamma', default=0.1, type=float, dest='gamma')
-parser.add_argument('--margin', default=0.7, type=float, dest='margin')
-parser.add_argument('--centers', default=25, type=int, dest='centers')
+parser.add_argument('--margin', default=0.1, type=float, dest='margin')
+parser.add_argument('--centers', default=5, type=int, dest='centers')
 parser.add_argument('--beta', default=0.4, type=float, dest='beta')
 parser.add_argument('--seed', default=2048, type=int, dest='seed')
 parser.add_argument('--output-dir', default="./result", dest='output_dir')
@@ -35,7 +35,7 @@ parser.add_argument('--per-device-train-batch-size', default=64, type=int, dest=
 parser.add_argument('--per-device-eval-batch-size', default=64, type=int, dest='per_device_eval_batch_size')
 parser.add_argument('--sample-size', default=20, type=int, dest='sample_size')
 parser.add_argument('--n-split', default=4, type=int, dest='n_split')
-parser.add_argument('--dataset-name', default="mrpc", dest='dataset_name')
+parser.add_argument('--dataset-name', default="cr", dest='dataset_name')
 
 
 def cross_validate(args):
