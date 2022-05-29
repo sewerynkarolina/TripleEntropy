@@ -28,13 +28,19 @@ parser.add_argument('--seed', default=2048, type=int, dest='seed')
 parser.add_argument('--output-dir', default="./result", dest='output_dir')
 parser.add_argument('--epochs', default=8, type=int, dest='epochs')
 parser.add_argument('--num-training-steps', default=10320, type=int, dest='num_training_steps')
+parser.add_argument('--per-device-train-batch-size', default=64, type=int, dest='per_device_train_batch_size')
+parser.add_argument('--per-device-eval-batch-size', default=64, type=int, dest='per_device_eval_batch_size')
+
 
 
 args = parser.parse_args()
 
 TrainingArguments(
     output_dir=args.output_dir,  # output directory
-    num_train_epochs=args.epochs
+    num_train_epochs=args.epochs,
+    per_device_train_batch_size=args.per_device_train_batch_size,
+    per_device_eval_batch_size=args.per_device_eval_batch_size,
+    fp16=True
 )
 
 if __name__ == '__main__':
