@@ -35,7 +35,7 @@ parser.add_argument('--per-device-eval-batch-size', default=64, type=int, dest='
 
 args = parser.parse_args()
 
-TrainingArguments(
+training_args = TrainingArguments(
     output_dir=args.output_dir,  # output directory
     num_train_epochs=args.epochs,
     per_device_train_batch_size=args.per_device_train_batch_size,
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     trainer = Trainer(
         model=model,
-        args=training.training_args,
+        args=training_args,
         train_dataset=train_dataset,
         eval_dataset=valid_dataset,
         optimizers=optimizers
