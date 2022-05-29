@@ -29,6 +29,7 @@ parser.add_argument('--centers', default=5, type=int, dest='centers')
 parser.add_argument('--beta', default=0.4, type=float, dest='beta')
 parser.add_argument('--seed', default=2048, type=int, dest='seed')
 parser.add_argument('--output-dir', default="./result", dest='output_dir')
+parser.add_argument('--save-steps', default=100, type=int, dest='save_steps')
 parser.add_argument('--epochs', default=120, type=int, dest='epochs')
 parser.add_argument('--num-training-steps', default=120, type=int, dest='num_training_steps')
 parser.add_argument('--per-device-train-batch-size', default=64, type=int, dest='per_device_train_batch_size')
@@ -53,6 +54,7 @@ def cross_validate(args):
     margin = args.margin
     centers = args.centers
     beta = args.beta
+    save_steps = args.save_steps
     sample_size = args.sample_size
     n_split = args.n_split
     supcon_temp = args.supcon_temp
@@ -63,7 +65,8 @@ def cross_validate(args):
         output_dir=args.output_dir,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.per_device_train_batch_size,
-        per_device_eval_batch_size=args.per_device_eval_batch_size
+        per_device_eval_batch_size=args.per_device_eval_batch_size,
+        save_steps=save_steps
     )
 
     kf = KFold(n_splits=n_split, random_state=seed, shuffle=True)
