@@ -1,24 +1,20 @@
 import pandas as pd
-import numpy as np
+from sklearn.utils import shuffle
+from datasets import load_dataset
 
-def load_dataset(dataset="sst2", size=20, seed=42):
+
+def prepare_dataset(dataset="sst2", seed=42):
     if dataset == "sst2":
-        df = pd.read_csv('SST-2/train.tsv', sep='\t')
-        df_valid = pd.read_csv('SST-2/dev.tsv', sep='\t')
-        type_ds = "SST2"
+        df = pd.read_csv('data/SST-2/train.tsv', sep='\t')
     elif dataset == "trec":
         dataset = load_dataset('trec')
         df = pd.DataFrame(
             list(zip([(eval['label-coarse']) for eval in dataset['train']],
                      [(eval['text']) for eval in dataset['train']])),
             columns=['label', 'sentence'])
-        df_valid = pd.DataFrame(
-            list(zip([(eval['label-coarse']) for eval in dataset['test']],
-                     [(eval['text']) for eval in dataset['test']])),
-            columns=['label', 'sentence'])
     elif dataset == "mr":
         d = []
-        with open('MR/rt-polarity.neg', "r") as f:
+        with open('data/MR/rt-polarity.neg', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -26,7 +22,7 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                         'label': 0
                     }
                 )
-        with open('MR/rt-polarity.pos', "r") as f:
+        with open('data/MR/rt-polarity.pos', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -35,14 +31,9 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                     }
                 )
         df = pd.DataFrame(d)
-        from sklearn.utils import shuffle
-
-        df = shuffle(df, random_state=seed)
-        type_ds = "MR"
-
     elif dataset == "cr":
         d = []
-        with open('CR/custrev.neg', "r") as f:
+        with open('data/CR/custrev.neg', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -50,7 +41,7 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                         'label': 0
                     }
                 )
-        with open('CR/custrev.pos', "r") as f:
+        with open('data/CR/custrev.pos', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -59,13 +50,9 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                     }
                 )
         df = pd.DataFrame(d)
-        from sklearn.utils import shuffle
-
-        df = shuffle(df, random_state=seed)
-        type_ds = "CR"
     elif dataset == "mpqa":
         d = []
-        with open('MPQA/mpqa.neg', "r") as f:
+        with open('data/MPQA/mpqa.neg', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -73,7 +60,7 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                         'label': 0
                     }
                 )
-        with open('MPQA/mpqa.pos', "r") as f:
+        with open('data/MPQA/mpqa.pos', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -82,15 +69,9 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                     }
                 )
         df = pd.DataFrame(d)
-        from sklearn.utils import shuffle
-
-        df = shuffle(df, random_state=seed)
-        df = shuffle(df, random_state=seed)
-        type_ds = "MPQA"
-
-    elif dataset =="subj":
+    elif dataset == "subj":
         d = []
-        with open('SUBJ/subj.objective', "r") as f:
+        with open('data/SUBJ/subj.objective', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -98,7 +79,7 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                         'label': 0
                     }
                 )
-        with open('SUBJ/subj.subjective', "r") as f:
+        with open('data/SUBJ/subj.subjective', "r") as f:
             for elem in f.readlines():
                 d.append(
                     {
@@ -107,9 +88,12 @@ def load_dataset(dataset="sst2", size=20, seed=42):
                     }
                 )
         df = pd.DataFrame(d)
-        from sklearn.utils import shuffle
-
-        df = shuffle(df, random_state=seed)
-        type_ds = "SUBJ"
-
-    train_index = np.random.choice(list(range(df.shape[0])), size, replace=False)
+    elif dataset == "mrpc":
+        df = pd.read_csv('data/MRPC/train.tsv', sep='\t', error_bad_lines=False)
+        df = df.rename(columns={'Quality': 'label', '#1 String': 'question', '#2 String': 'sentence'})
+        df["question"] = df["question"].astype(str)
+        df['sentence'] = df["sentence"].astype(str)
+    else:
+        raise ValueError(f'Cannot load the dataset: {dataset}.')
+    df = shuffle(df, random_state=seed)
+    return df
