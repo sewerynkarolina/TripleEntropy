@@ -34,6 +34,7 @@ Below are explained parameters:
 ```--beta``` parameter that controls the effect of SoftTripleLoss/SupConLoss and CrossEntropyLoss on the training process
 
 ```--supcon-temp``` temperature parameter of the SupConLoss. Available only when model-type is ```supcon```
+
 ```--seed``` set the seed for the training process
 
 ```--output-dir``` the output directory where the model predictions and checkpoints will be written
