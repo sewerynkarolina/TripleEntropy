@@ -120,6 +120,8 @@ def cross_validate(args):
 
         trainer.train()
         cross_val_res[fold_id] = trainer.evaluate()
+        trainer.save_model(args.output_dir + f'{fold_id}_{model_name}_{model_type}_{dataset_name}/model')
+
     print(f"Model type: {model_type}, Dataset name: {dataset_name}")
     for measure in ["eval_f1_score", "eval_recall_score", "eval_accuracy_score", "eval_precision_score"]:
         print(

@@ -38,6 +38,8 @@ Below are explained parameters:
 
 ```--output-dir``` the output directory where the model predictions and checkpoints will be written
 
+```--save-steps``` the number of steps before checkpoint is saved
+
 ```--epochs``` number of epochs
 
 ```--num-training-steps``` the number of training steps to do.
